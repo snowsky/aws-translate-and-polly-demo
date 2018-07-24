@@ -1,48 +1,46 @@
-const pkg = require('./package')
+const pkg = require("./package");
+require("dotenv").config().parsed;
 
 module.exports = {
-  mode: 'universal',
+  mode: "universal",
 
   /*
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: "Russian to English",
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: pkg.description }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
 
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#FFFFFF' },
+  loading: { color: "#FFFFFF" },
 
   /*
   ** Global CSS
   */
-  css: [
-  ],
+  css: [],
 
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-  ],
+  plugins: [],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios',
+    "@nuxtjs/axios",
     // Doc:https://github.com/nuxt-community/modules/tree/master/packages/bulma
-    '@nuxtjs/bulma'
+    "@nuxtjs/bulma",
+    ["@nuxtjs/dotenv"]
   ],
   /*
   ** Axios module configuration
@@ -57,7 +55,7 @@ module.exports = {
   build: {
     postcss: {
       plugins: {
-        'postcss-cssnext': {
+        "postcss-cssnext": {
           features: {
             customProperties: false
           }
@@ -71,12 +69,12 @@ module.exports = {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
-          enforce: 'pre',
+          enforce: "pre",
           test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
+          loader: "eslint-loader",
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }
-}
+};

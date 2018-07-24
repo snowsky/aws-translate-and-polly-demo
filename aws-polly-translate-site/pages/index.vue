@@ -41,6 +41,9 @@
 
 export default {
   components: {
+  },
+  mounted() {
+    console.log(process.env.AWS_ACCESS_KEY);
   }
 }
 </script>
