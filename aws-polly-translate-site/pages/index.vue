@@ -53,10 +53,18 @@ const translate = new AWS.Translate({region: AWS.config.region});
 const polly = new AWS.Polly();
 const INPUT_LANG = 'en';
 const OUTPUT_LANG = 'ru';
+const voiceId = "Maxim"; // russian male
 const translateParams = {
     Text: '',
     SourceLanguageCode: INPUT_LANG,
     TargetLanguageCode: OUTPUT_LANG
+};
+const pollyParams = {
+    OutputFormat: "mp3", 
+    SampleRate: "8000", 
+    Text: '', 
+    TextType: "text", 
+    VoiceId: voiceId
 };
 
 export default {
@@ -65,12 +73,6 @@ export default {
 
   },
   computed: {
-    inputText() {
-      return this.$store.state.inputText; 
-    },
-    outputText() {
-      return this.$store.state.outputText; 
-    }
   },
   methods: {
     handleInput(e) {
@@ -86,7 +88,7 @@ export default {
       const outputText = this.$refs.outputText;
       translateParams.Text = inputText.value;
 
-      translate.translateText(translateParams, function(err, data) {
+      translate.translateText(translateParams, (err, data) => {
         if (err) {
           console.log(err, err.stack);
           alert("Error calling Amazon Translate. " + err.message);
@@ -94,6 +96,23 @@ export default {
         }
         if (data) {
           outputText.value = data.TranslatedText;
+
+          pollyParams.Text = outputText.value;
+          polly.synthesizeSpeech(pollyParams, (err, data) => {
+              if (err) {
+                console.log(err, err.stack); // an error occurred
+                alert("Error calling Amazon Polly. " + err.message);
+              }
+
+              else {
+                const uInt8Array = new Uint8Array(data.AudioStream);
+                const arrayBuffer = uInt8Array.buffer;
+                const blob = new Blob([arrayBuffer]);
+                const url = URL.createObjectURL(blob);
+                const audioElement = new Audio([url]);
+                audioElement.play();
+              }
+          });
         }
       });
     }
