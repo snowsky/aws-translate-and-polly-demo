@@ -5,9 +5,16 @@ const createStore = () => {
     state: {
       debug: false,
       inputText: "",
-      translatedText: ""
+      outputText: ""
     },
-    mutations: {},
+    mutations: {
+      inputText(state, payload) {
+        state.inputText = payload;
+      },
+      translateText(state, payload) {
+        state.outputText = payload;
+      }
+    },
     actions: {},
     getters: {}
   });
